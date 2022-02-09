@@ -11,7 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -56,26 +55,13 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-
-
-    const blogObject = {
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url,
-      likes: 0
-    }
-
-    console.log('blogObject', blogObject)
-
+  const addBlog = async (blogObject) => {
 
     try {
       await blogService
         .create(blogObject)
         .then(returnedBlog => {
           setBlogs(blogs.concat(returnedBlog))
-          setNewBlog({ author: '', title: '', url: '' })
           setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
           setTimeout(() => {
             setMessage(null)
@@ -91,31 +77,11 @@ const App = () => {
 
   }
 
-  const handleChangeOfAuthor = (event) => {
-    console.log(event.target.value)
-    setNewBlog({ ...newBlog, author: event.target.value })
-  }
-  const handleChangeOfTitle = (event) => {
-    console.log(event.target.value)
-    setNewBlog({ ...newBlog, title: event.target.value })
-  }
-  const handleChangeOfUrl = (event) => {
-    console.log(event.target.value)
-    //onChange={({ target }) => setNewBlog({...newBlog,url: target.value})} />
-    setNewBlog({ ...newBlog, url: event.target.value })
-  }
-
-
-  //onChange={({ target }) => setNewBlog({...newBlog,url: target.value})} />
 
   const blogForm = () => (
     <Togglable buttonLabel="create new blog">
       <BlogForm
-        onSubmit={addBlog}
-        newBlog={newBlog}
-        handleAuthorChange={handleChangeOfAuthor}
-        handleTitleChange={handleChangeOfTitle}
-        handleUrlChange={handleChangeOfUrl} 
+        createBlog={addBlog}
       />
     </Togglable>
   )
