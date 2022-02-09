@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -61,6 +61,7 @@ const App = () => {
       await blogService
         .create(blogObject)
         .then(returnedBlog => {
+          blogFormRef.current.toggleVisibility()
           setBlogs(blogs.concat(returnedBlog))
           setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
           setTimeout(() => {
@@ -77,9 +78,10 @@ const App = () => {
 
   }
 
+  const blogFormRef = useRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel="create new blog">
+    <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <BlogForm
         createBlog={addBlog}
       />
