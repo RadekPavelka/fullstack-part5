@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
@@ -22,46 +22,26 @@ const BlogForm = ({ createBlog }) => {
       likes: 0
     })
 
-    setNewBlog({ author: '', title: '', url: '' }) 
-
-/* 
-    try {
-      await blogService
-        .create(blogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-          setNewBlog({ author: '', title: '', url: '' })
-          setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
-        })
-
-    } catch (exception) {
-      setMessage('Missing title or url')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    } */
+    setNewBlog({ author: '', title: '', url: '' })
 
   }
 
   return (
-    <div>
+    <div className="formDiv">
       <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>title
-          <input type="text" value={newBlog.title} name="Title"
-            onChange={handleChangeOfTitle}
+          <input type="text" id="title-input" value={newBlog.title} name="Title"
+            onChange={handleChangeOfTitle} placeholder="write the title of the blog"
           />
         </div>
         <div>author
-          <input type="text" value={newBlog.author} name="Author"
-            onChange={handleChangeOfAuthor} />
+          <input type="text" id="author-input" value={newBlog.author} name="Author"
+            onChange={handleChangeOfAuthor} placeholder="write the author"/>
         </div>
         <div>url
-          <input type="text" value={newBlog.url} name="URL"
-            onChange={handleChangeOfUrl} />
+          <input type="text" id="url-input" value={newBlog.url} name="URL"
+            onChange={handleChangeOfUrl} placeholder="write blog's url" />
         </div>
         <button type="submit">create</button>
       </form>

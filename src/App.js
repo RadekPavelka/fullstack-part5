@@ -14,9 +14,9 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      setBlogs(blogs.sort((firstBlog, secondBlog) =>  secondBlog.likes - firstBlog.likes))
     )
-  }, [])
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -39,6 +39,7 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
+      console.log(user.username)
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -62,6 +63,7 @@ const App = () => {
         .create(blogObject)
         .then(returnedBlog => {
           blogFormRef.current.toggleVisibility()
+          console.log('returnedBlog', returnedBlog)
           setBlogs(blogs.concat(returnedBlog))
           setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
           setTimeout(() => {
@@ -76,6 +78,12 @@ const App = () => {
       }, 5000)
     }
 
+  }
+
+  const removeBlog = (blogId) => {
+    blogService
+      .remove(blogId)
+      .then(setBlogs(blogs.filter(b => b.id !== blogId)))
   }
 
   const blogFormRef = useRef()
@@ -120,7 +128,7 @@ const App = () => {
       {blogForm()}
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} deleteBlog={removeBlog}/>
       )}
 
     </div>
