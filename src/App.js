@@ -3,13 +3,12 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -27,8 +26,7 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
         username, password,
@@ -40,8 +38,6 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       console.log(user.username)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setMessage('Wrong credentials')
       setTimeout(() => {
@@ -80,6 +76,18 @@ const App = () => {
 
   }
 
+  const likeBlog = (blog) => {
+    blogService
+      .update(blog.id, { ...blog, likes: ++blog.likes })
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
+      })
+      .catch(error => {
+        console.log('Something went wrong, error: ', error)
+      })
+
+  }
+
   const removeBlog = (blogId) => {
     blogService
       .remove(blogId)
@@ -98,22 +106,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <h2>Log in to application</h2>
-        <p>{message}</p>
-        <form onSubmit={handleLogin}>
-          <div>username
-            <input type="text" value={username} name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>password
-            <input type="password" value={password} name="Password"
-              onChange={({ target }) => setPassword(target.value)} />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
+      <LoginForm message={message} loginUser={handleLogin}/>
     )
   }
 
@@ -128,7 +121,7 @@ const App = () => {
       {blogForm()}
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} deleteBlog={removeBlog}/>
+        <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={removeBlog} currentUser={user.username}/>
       )}
 
     </div>
