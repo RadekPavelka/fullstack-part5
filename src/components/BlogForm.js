@@ -1,21 +1,9 @@
 import React, { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
-  //const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
-
-
-  /*   const handleChangeOfAuthor = (event) => {
-    setBlogAuthor(event.target.value)
-  }
-  const handleChangeOfTitle = (event) => {
-    setBlogTitle(event.target.value)
-  }
-  const handleChangeOfUrl = (event) => {
-    setBlogUrl(event.target.value)
-  } */
 
   const addBlog = (event) => {
     event.preventDefault()
