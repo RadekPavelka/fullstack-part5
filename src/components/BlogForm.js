@@ -1,28 +1,34 @@
 import React, { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  //const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
 
-  const handleChangeOfAuthor = (event) => {
-    setNewBlog({ ...newBlog, author: event.target.value })
+
+  /*   const handleChangeOfAuthor = (event) => {
+    setBlogAuthor(event.target.value)
   }
   const handleChangeOfTitle = (event) => {
-    setNewBlog({ ...newBlog, title: event.target.value })
+    setBlogTitle(event.target.value)
   }
   const handleChangeOfUrl = (event) => {
-    setNewBlog({ ...newBlog, url: event.target.value })
-  }
+    setBlogUrl(event.target.value)
+  } */
 
-  const addBlog = async (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
     createBlog({
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url,
+      title: blogTitle,
+      author: blogAuthor,
+      url: blogUrl,
       likes: 0
     })
 
-    setNewBlog({ author: '', title: '', url: '' })
+    setBlogTitle('')
+    setBlogAuthor('')
+    setBlogUrl('')
 
   }
 
@@ -31,17 +37,17 @@ const BlogForm = ({ createBlog }) => {
       <h2>create new</h2>
       <form onSubmit={addBlog}>
         <div>title
-          <input type="text" id="title-input" value={newBlog.title} name="Title"
-            onChange={handleChangeOfTitle} placeholder="write the title of the blog"
+          <input type="text" id="title-input" value={blogTitle} name="Title"
+            onChange={(e) => setBlogTitle(e.target.value)} placeholder="write the title of the blog"
           />
         </div>
         <div>author
-          <input type="text" id="author-input" value={newBlog.author} name="Author"
-            onChange={handleChangeOfAuthor} placeholder="write the author"/>
+          <input type="text" id="author-input" value={blogAuthor} name="Author"
+            onChange={(e) => setBlogAuthor(e.target.value)} placeholder="write the author"/>
         </div>
         <div>url
-          <input type="text" id="url-input" value={newBlog.url} name="URL"
-            onChange={handleChangeOfUrl} placeholder="write blog's url" />
+          <input type="text" id="url-input" value={blogUrl} name="URL"
+            onChange={(e) => setBlogUrl(e.target.value)} placeholder="write blog's url" />
         </div>
         <button type="submit">create</button>
       </form>
