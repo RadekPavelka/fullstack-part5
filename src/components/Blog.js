@@ -26,13 +26,14 @@ const Blog = ({ blog, currentUser, likeBlog, deleteBlog }) => {
     marginBottom: 5
   }
 
+
   if (detailsVisible) {
     return (
       <div style={blogStyle} className='blogDetails'>
         {blog.title} {blog.author} <button onClick={toggleVisibility} type="button">hide</button> <br />
         {blog.url}<br />
         likes:  {blog.likes} <button onClick={incrementLikes} type="button">like</button><br />
-        user:  {blog.user ? blog.user.username : 'unknown'} <br />
+        user:  {blog.user.username} <br />
         {currentUser === blog.user.username && <button onClick={removeBlog}>remove</button>}
       </div>
     )

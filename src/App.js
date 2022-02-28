@@ -15,7 +15,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs.sort((firstBlog, secondBlog) =>  secondBlog.likes - firstBlog.likes))
     )
-  }, [blogs])
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -77,10 +77,12 @@ const App = () => {
   }
 
   const likeBlog = (blog) => {
+    console.log('blog ', blog)
     blogService
-      .update(blog.id, { ...blog, likes: ++blog.likes })
+      .update(blog.id, { ...blog, likes: ++blog.likes, user: blog.user._id })
       .then(returnedBlog => {
-        setBlogs(blogs.map(b => b.id !== blog.id ? b : returnedBlog))
+        console.log('returnedBlog ', returnedBlog)
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : { ...returnedBlog, user: blog.user }))
       })
       .catch(error => {
         console.log('Something went wrong, error: ', error)
