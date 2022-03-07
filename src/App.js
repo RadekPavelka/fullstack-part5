@@ -13,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((firstBlog, secondBlog) =>  secondBlog.likes - firstBlog.likes))
+      setBlogs(blogs)
     )
   }, [])
 
@@ -21,8 +21,8 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
       blogService.setToken(user.token)
+      setUser(user)
     }
   }, [])
 
@@ -52,28 +52,18 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (blogObject) => {
-
-    try {
-      await blogService
-        .create(blogObject)
-        .then(returnedBlog => {
-          blogFormRef.current.toggleVisibility()
-          console.log('returnedBlog', returnedBlog)
-          setBlogs(blogs.concat(returnedBlog))
-          setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
-        })
-
-    } catch (exception) {
-      setMessage('Missing title or url')
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    }
-
+  const addBlog = (blog) => {
+    blogService
+      .create(blog)
+      .then(newBlog => {
+        setBlogs(blogs.concat(newBlog))
+        setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`)
+        setTimeout(() => setMessage(), 3000)
+      })
+      .catch(error => {
+        setMessage(error.response.data.error)
+        setTimeout(() => setMessage(), 3000)
+      })
   }
 
   const likeBlog = (blog) => {
@@ -118,13 +108,14 @@ const App = () => {
       <p>{message}</p>
       <form onSubmit={handleLogout}>
         {user.username} logged in
-        <button type="submit">logout</button>
+        <button id='logout-button' type="submit">logout</button>
       </form>
       {blogForm()}
 
-      {blogs.map(blog =>
+      {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={removeBlog} currentUser={user.username}/>
       )}
+
 
     </div>
   )

@@ -24,7 +24,7 @@ describe('<Blog />', () => {
 
 
   test('at start the blog details are not displayed', () => {
-    const div = container.querySelector('.blogGeneral')
+    const div = container.querySelector('.blog')
     expect(div).toBeDefined()
     expect(div).toHaveTextContent(blog.title)
     expect(div).toHaveTextContent(blog.author)
@@ -38,7 +38,7 @@ describe('<Blog />', () => {
     const button = screen.getByText('view')
     userEvent.click(button)
 
-    const div = container.querySelector('.blogDetails')
+    const div = container.querySelector('.blog')
     expect(div).toBeDefined()
     expect(div).toHaveTextContent(blog.title)
     expect(div).toHaveTextContent(blog.author)
