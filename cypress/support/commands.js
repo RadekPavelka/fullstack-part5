@@ -32,13 +32,11 @@ Cypress.Commands.add('login', ({ username, password }) => {
   })
 })
 
-//"title": "How to learn React", "author": "Peter Reactor", "url": "https://howto.com/react/1", "likes": "100"
-
-Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
+Cypress.Commands.add('createBlog', ({ title, author, url }) => {
   cy.request({
     url: 'http://localhost:3003/api/blogs',
     method: 'POST',
-    body: { title, author, url, likes },
+    body: { title, author, url },
     headers: {
       'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
     }
