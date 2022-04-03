@@ -1,3 +1,13 @@
+# fullstack-part5
+This project was completed as part of "Full Stack open 2022" course by University Of Helsinki  
+Link for the assignment: https://fullstackopen.com/en/part5
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
